@@ -1,1 +1,1 @@
-worker: python STALKER.py
+web: python STALKER.py
