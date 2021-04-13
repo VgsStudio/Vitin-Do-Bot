@@ -158,7 +158,7 @@ def reply_to_tweets_thony(): # Responde a thony
                             tweet_mode = 'extended')
             
             for mention in reversed(mentions_thony):
-                if last_seen_id_thony > mention.id:
+                if last_seen_id_thony < mention.id:
                     last_seen_id_thony = mention.id
                     store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
 
@@ -188,7 +188,7 @@ def store_tweets_thony(): # Armazena os Tweets do thonyd
 
             for mention in reversed(mentions_thony):
                 print(str(mention.id) + ' - ' + mention.full_text,'- thony')
-                if last_seen_id_thony > mention.id:
+                if last_seen_id_thony < mention.id:
                     last_seen_id_thony = mention.id
                     store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
 
@@ -381,7 +381,7 @@ def reply_to_tweets_vgs(): # Responde o Vgs
             
             for mention in reversed(mentions_vgs):
                 last_seen_id_vgs = retrieve_last_seen_id_vgs(file_name_vgs)
-                if last_seen_id_vgs > mention.id:
+                if last_seen_id_vgs < mention.id:
                     last_seen_id_vgs = mention.id
                     store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
                     if ('RT @' not in mention.full_text): #Evita responder RTs sem comentários
@@ -411,7 +411,7 @@ def store_tweets_vgs(): # Armazena os Tweets do Vgs
                 print(str(mention.id) + ' - ' + mention.full_text, '- Vgs')
                 last_seen_id_vgs = mention.id
                 store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
-                if last_seen_id_vgs > mention.id:
+                if last_seen_id_vgs < mention.id:
                     last_seen_id_vgs = mention.id
                     store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
 
