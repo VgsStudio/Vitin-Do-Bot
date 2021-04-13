@@ -8,6 +8,7 @@ consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
 access_token_secret = environ['access_token_secret']
 
+
 print('Get Rate', flush=True)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -18,5 +19,5 @@ api = tweepy.API(auth)
 data = api.rate_limit_status()
 while True:
     print (data['resources']['statuses']['/statuses/user_timeline'])
+    print(data['resources']['statuses']['/statuses/mentions_timeline'])
     time.sleep(5)
-

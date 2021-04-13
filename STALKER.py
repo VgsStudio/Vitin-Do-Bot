@@ -1,11 +1,11 @@
 import tweepy, time, random, threading
 from os import environ
 
+
 consumer_key = environ['consumer_key']
 consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
 access_token_secret = environ['access_token_secret']
-
 
 print('Vitin do Bot', flush=True)
 
@@ -389,9 +389,10 @@ def reply_to_tweets_vgs(): # Responde o Vgs
                         api.create_favorite(mention.id)
                         api.retweet(mention.id)                    
                         api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
-                    print("Parando de responder.")
+
                 else:
                     break
+            print("Parando de responder.")
             
         
 
@@ -420,12 +421,52 @@ def store_tweets_vgs(): # Armazena os Tweets do Vgs
                         api.retweet(mention.id)  
                 else:
                     break
+
+
     print("Parando de armazenar...")
     time.sleep(tempo_vgs)
 
 p_store_tweets_vgs = threading.Thread(target=store_tweets_vgs)
 p_reply_to_tweets_vgs = threading.Thread(target=reply_to_tweets_vgs)
 
+#Responder salve
+
+file_name_salve = 'last_salve_id.txt'
+
+def retrieve_last_seen_id_salve(file_name):
+    f_read = open(file_name, 'r')
+    last_seen_id = int(f_read.read().strip())
+    f_read.close()
+    return last_seen_id
+
+def store_last_seen_id_salve(last_seen_id, file_name):
+    f_write = open(file_name, 'w')
+    f_write.write(str(last_seen_id))
+    f_write.close()
+    return
+
+def manda_salve():
+    print('Respondendo salve...', flush=True)
+    
+    while True:
+        time.sleep(10)
+
+        last_seen_id_salve = retrieve_last_seen_id_salve(file_name_salve)
+        
+        mentions = api.mentions_timeline(
+                                since_id = last_seen_id_salve,
+                                tweet_mode='extended')
+            
+        for mention in reversed(mentions):
+            print(str(mention.id) + ' - ' + mention.full_text)
+            last_seen_id_salve = mention.id
+            store_last_seen_id_salve(last_seen_id_salve, file_name_salve)
+            
+            if 'salve' in mention.full_text.lower():
+                print("Salve cachorro do mangue")
+                api.update_status("@" + mention.user.screen_name + 
+                                " Salve cachorro do mangue!", mention.id)
+p_manda_salve = threading.Thread(target = manda_salve)
 
 def tweet_trap():
     while True:
@@ -449,6 +490,9 @@ def tweet_trap():
 p_tweet_trap = threading.Thread(target = tweet_trap )
 
 #Funções Paralelas
+
+# Responde salve
+p_manda_salve.start()
 
 # Trap
 p_tweet_trap.start()

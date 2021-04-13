@@ -2,6 +2,7 @@ import tweepy
 import time
 from os import environ
 
+
 consumer_key = environ['consumer_key']
 consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
@@ -13,7 +14,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-userID = 'anthony_vigario' # Usuário
+userID = 'vgs_studio' # Usuário
 
 mentions = api.user_timeline(userID, 
                            tweet_mode = 'extended'
