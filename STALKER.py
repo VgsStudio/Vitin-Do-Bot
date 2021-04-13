@@ -466,7 +466,7 @@ def manda_salve():
             if 'salve' in mention.full_text.lower():
                 print("Salve cachorro do mangue")
                 api.update_status("@" + mention.user.screen_name + 
-                                " Salve cachorro do mangue!", mention.id)
+                                " Salve, cachorro do mangue!", mention.id)
 p_manda_salve = threading.Thread(target = manda_salve)
 
 def tweet_trap():
