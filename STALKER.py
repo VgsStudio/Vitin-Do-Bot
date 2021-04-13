@@ -6,6 +6,7 @@ consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
 access_token_secret = environ['access_token_secret']
 
+
 print('Vitin do Bot', flush=True)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -67,7 +68,7 @@ def store_last_seen_id_thu(last_seen_id_thu, file_name_thu):
 def reply_to_tweets_thu(): # Responde a thu
     print('Procurando uns tweets da thu...', flush=True)
     while True:
-        tempo_thu = 5*60 #5 minutos vezes 60
+        tempo_thu = 5*60 #5 minutos -> 5 segundos * 60
         time.sleep(tempo_thu)
         tempo_que_funciona = time.time() + tempo_thu #tempo de 5 minutos
         last_seen_id_thu = retrieve_last_seen_id_thu(file_name_thu)
@@ -137,7 +138,7 @@ def store_last_seen_id_thony(last_seen_id_thony, file_name_thony):
 def reply_to_tweets_thony(): # Responde a thony
     print('Procurando uns tweets da thony...', flush=True)
     while True:
-        tempo_thony = 5*60 #5 minutos vezes 60
+        tempo_thony = 5*60 #5 minutos -> 5 segundos * 60
         time.sleep(tempo_thony)
         tempo_que_funciona = time.time() + tempo_thony #tempo de 5 minutos
         last_seen_id_thony = retrieve_last_seen_id_thony(file_name_thony)
@@ -169,7 +170,7 @@ def reply_to_tweets_thony(): # Responde a thony
                 else:
                     break
 
-def store_tweets_thony(): # Armazena os Tweets do thonyd
+def store_tweets_thony(): # Armazena os Tweets do thony
     print('Armazenando uns tweets...', flush=True)
     while True:
         tempo_thony = 5*60
@@ -224,7 +225,7 @@ def store_last_seen_id_luiza(last_seen_id_luiza, file_name_luiza):
 def reply_to_tweets_luiza(): # Responde a luiza
     print('Procurando uns tweets da luiza...', flush=True)
     while True:
-        tempo_luiza = 5*60 #5 minutos vezes 60
+        tempo_luiza = 5*60 #5 minutos -> 5 segundos * 60
         time.sleep(tempo_luiza)
         tempo_que_funciona = time.time() + tempo_luiza #tempo de 5 minutos
         last_seen_id_luiza = retrieve_last_seen_id_luiza(file_name_luiza)
@@ -292,7 +293,7 @@ def store_last_seen_id_lari(last_seen_id_lari, file_name_lari):
 def reply_to_tweets_lari(): # Responde a lari
     print('Procurando uns tweets da lari...', flush=True)
     while True:
-        tempo_lari = 5*60 #5 minutos vezes 60
+        tempo_lari = 5*60 #5 minutos -> 5 segundos * 60
         time.sleep(tempo_lari)
         tempo_que_funciona = time.time() + tempo_lari #tempo de 5 minutos
         last_seen_id_lari = retrieve_last_seen_id_lari(file_name_lari)
@@ -359,7 +360,7 @@ def store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs):
 def reply_to_tweets_vgs(): # Responde o Vgs
     print('Procurando uns tweets do Vgs...', flush=True)
     while True:
-        tempo_vgs = 5*60 #5 minutos vezes 60
+        tempo_vgs = 5*60 #5 minutos -> 5 segundos * 60
         time.sleep(tempo_vgs)
         tempo_que_funciona = time.time() + tempo_vgs #tempo de 5 minutos
         last_seen_id_vgs = retrieve_last_seen_id_vgs(file_name_vgs)
@@ -426,7 +427,31 @@ p_store_tweets_vgs = threading.Thread(target=store_tweets_vgs)
 p_reply_to_tweets_vgs = threading.Thread(target=reply_to_tweets_vgs)
 
 
+def tweet_trap():
+    while True:
+        time.sleep(30*60) #30 segundos * 60 -> 30 minutos.
+        
+        vitin_tweets =  'vitin_tweets.txt' #Arquivo das Frases
+
+        try:
+            #Frases
+            arquivoFrases = open(vitin_tweets, 'r')
+            arrayFrases = arquivoFrases.read().split('\n')
+            frase = random.choice(arrayFrases)
+            #Frases
+
+            api.update_status('%s' % frase) # Tweetar frase
+            print('%s -> Tweet' % frase) # Frase postada
+        except tweepy.TweepError as error:
+            if error.api_code == 187:
+                print('Status duplicado')
+
+p_tweet_trap = threading.Thread(target = tweet_trap )
+
 #Funções Paralelas
+
+# Trap
+p_tweet_trap.start()
 
 #Funções do Vgs
 p_store_tweets_vgs.start()
