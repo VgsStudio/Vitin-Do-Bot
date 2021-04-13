@@ -1,7 +1,6 @@
 import tweepy, time, random, threading
 from os import environ
 
-
 consumer_key = environ['consumer_key']
 consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
@@ -388,9 +387,10 @@ def reply_to_tweets_vgs(): # Responde o Vgs
                         api.create_favorite(mention.id)
                         api.retweet(mention.id)                    
                         api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                    print("Parando de responder.")
                 else:
                     break
-            print("Parando de responder.")
+            
         
 
 def store_tweets_vgs(): # Armazena os Tweets do Vgs
@@ -409,18 +409,16 @@ def store_tweets_vgs(): # Armazena os Tweets do Vgs
                            tweet_mode = 'extended') 
             for mention in reversed(mentions_vgs):
                 print(str(mention.id) + ' - ' + mention.full_text, '- Vgs')
-                last_seen_id_vgs = mention.id
-                store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
+                last_seen_id_vgs = retrieve_last_seen_id_vgs(file_name_vgs)
                 if last_seen_id_vgs < mention.id:
                     last_seen_id_vgs = mention.id
                     store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
-
-                    if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                    if 'RT @' not in mention.full_text: #Evita curtir RTs sem comentários
                         api.create_favorite(mention.id)
                         api.retweet(mention.id)  
                 else:
                     break
-    print("Parando de armazenar.")
+    print("Parando de armazenar...")
     time.sleep(tempo_vgs)
 
 p_store_tweets_vgs = threading.Thread(target=store_tweets_vgs)
