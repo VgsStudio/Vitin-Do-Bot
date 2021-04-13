@@ -158,14 +158,20 @@ def reply_to_tweets_thony(): # Responde a thony
                             tweet_mode = 'extended')
             
             for mention in reversed(mentions_thony):
-                last_seen_id_thony = mention.id   
-                store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
-                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
-                    api.create_favorite(mention.id)
-                    api.retweet(mention.id)
-                    api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                if last_seen_id_thony > mention.id:
+                    last_seen_id_thony = mention.id
+                    store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
 
-def store_tweets_thony(): # Armazena os Tweets do thony
+                    last_seen_id_thony = mention.id   
+                    store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
+                    if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                        api.create_favorite(mention.id)
+                        api.retweet(mention.id)
+                        api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                else:
+                    break
+
+def store_tweets_thony(): # Armazena os Tweets do thonyd
     print('Armazenando uns tweets...', flush=True)
     while True:
         tempo_thony = 5*60
@@ -182,11 +188,17 @@ def store_tweets_thony(): # Armazena os Tweets do thony
 
             for mention in reversed(mentions_thony):
                 print(str(mention.id) + ' - ' + mention.full_text,'- thony')
-                last_seen_id_thony = mention.id
-                store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
-                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
-                    api.create_favorite(mention.id)
-                    api.retweet(mention.id)
+                if last_seen_id_thony > mention.id:
+                    last_seen_id_thony = mention.id
+                    store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
+
+                    last_seen_id_thony = mention.id
+                    store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
+                    if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                        api.create_favorite(mention.id)
+                        api.retweet(mention.id)
+                else:
+                    break
     time.sleep(tempo_thony)
 
 
@@ -368,13 +380,17 @@ def reply_to_tweets_vgs(): # Responde o Vgs
                             tweet_mode = 'extended')
             
             for mention in reversed(mentions_vgs):
-                last_seen_id_vgs = mention.id
-                store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
-                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
-                    api.create_favorite(mention.id)
-                    api.retweet(mention.id)                    
-                    api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
-        print("Parando de responder.")
+                last_seen_id_vgs = retrieve_last_seen_id_vgs(file_name_vgs)
+                if last_seen_id_vgs > mention.id:
+                    last_seen_id_vgs = mention.id
+                    store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
+                    if ('RT @' not in mention.full_text): #Evita responder RTs sem comentários
+                        api.create_favorite(mention.id)
+                        api.retweet(mention.id)                    
+                        api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                else:
+                    break
+            print("Parando de responder.")
         
 
 def store_tweets_vgs(): # Armazena os Tweets do Vgs
@@ -395,9 +411,15 @@ def store_tweets_vgs(): # Armazena os Tweets do Vgs
                 print(str(mention.id) + ' - ' + mention.full_text, '- Vgs')
                 last_seen_id_vgs = mention.id
                 store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
-                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
-                    api.create_favorite(mention.id)
-                    api.retweet(mention.id)  
+                if last_seen_id_vgs > mention.id:
+                    last_seen_id_vgs = mention.id
+                    store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
+
+                    if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                        api.create_favorite(mention.id)
+                        api.retweet(mention.id)  
+                else:
+                    break
     print("Parando de armazenar.")
     time.sleep(tempo_vgs)
 
