@@ -8,23 +8,15 @@ consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
 access_token_secret = environ['access_token_secret']
 
-
-
-print('Bot da perfeição', flush=True)
+print('Get Rate', flush=True)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-userID = 'tutu_kosinski'
 
-mentions = api.user_timeline(userID, 
-                           tweet_mode = 'extended'
-                           )
+data = api.rate_limit_status()
+while True:
+    print (data['resources']['statuses']['/statuses/user_timeline'])
+    time.sleep(5)
 
-# MENÇÕES
-for info in reversed(mentions[:100]):
-    print("ID: {}".format(info.id))
-    print(info.created_at)
-    print(info.full_text)
-    print("\n")

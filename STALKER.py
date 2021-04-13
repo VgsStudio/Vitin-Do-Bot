@@ -1,110 +1,194 @@
 import tweepy, time, random, threading
 from os import environ
 
+
 consumer_key = environ['consumer_key']
 consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
 access_token_secret = environ['access_token_secret']
 
-print('Bot da perfeição', flush=True)
+
+print('Vitin do Bot', flush=True)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
-#Pessoas
+data = api.rate_limit_status()
+print (data['resources']['statuses']['/statuses/user_timeline'])
+
+
     #Vitin
 userID_vgs = 'vgs_studio'
-
-mentions_vgs = api.user_timeline(userID_vgs, 
-                           tweet_mode = 'extended'
-                           )
 
 file_name_vgs = 'last_seen_id_vgs.txt'
 frasestxt_vgs = 'frases_vitin.txt'
 
-    #Lulu   
-userID_luiza = 'luizaskun'
-
-
-mentions_luiza = api.user_timeline(userID_luiza, 
-                           tweet_mode = 'extended'
-                           )
-
-file_name_luiza = 'last_seen_id_luiza.txt'
-frasestxt_luiza = 'frases_luiza.txt'
-
-    #Lari   
+    #Lari
 userID_lari = 'llaricasarini'
-
-mentions_lari = api.user_timeline(userID_lari, 
-                           tweet_mode = 'extended'
-                           )
 
 file_name_lari = 'last_seen_id_lari.txt'
 frasestxt_lari = 'frases_lari.txt'
 
+    #luiza
+userID_luiza = 'luizaskun'
 
-#Funções da Lari
+file_name_luiza = 'last_seen_id_luiza.txt'
+frasestxt_luiza = 'frases_luiza.txt'
 
 
-def retrieve_last_seen_id_lari(file_name_lari):
-    f_read = open(file_name_lari, 'r')
-    last_seen_id_lari = int(f_read.read().strip())
+    #thony
+userID_thony = 'anthony_vigario'
+
+file_name_thony = 'last_seen_id_thony.txt'
+frasestxt_thony = 'frases_vitin.txt'
+
+
+
+    #thu
+userID_thu = 'tutu_kosinski'
+
+file_name_thu = 'last_seen_id_thu.txt'
+frasestxt_thu = 'frases_thu.txt'
+
+
+#Funções da thu-----------------------------------
+
+def retrieve_last_seen_id_thu(file_name_thu):
+    f_read = open(file_name_thu, 'r')
+    last_seen_id_thu = int(f_read.read().strip())
     f_read.close()
-    return last_seen_id_lari
+    return last_seen_id_thu
 
-def store_last_seen_id_lari(last_seen_id_lari, file_name_lari):
-    f_write = open(file_name_lari, 'w')
-    f_write.write(str(last_seen_id_lari))
+def store_last_seen_id_thu(last_seen_id_thu, file_name_thu):
+    f_write = open(file_name_thu, 'w')
+    f_write.write(str(last_seen_id_thu))
     f_write.close()
     return
 
-
-def reply_to_tweets_lari(): # Responde o lari
-    print('procurando uns tweets do lari', flush=True)
+ 
+def reply_to_tweets_thu(): # Responde a thu
+    print('Procurando uns tweets da thu...', flush=True)
     while True:
-        print("Reiniciando...")
-        tempo_lari = 5*60 #5 minutos vezes 60
-        time.sleep(tempo_lari)
-        tempo_que_funciona = time.time() + tempo_lari #tempo de 5 minutos
-        print("Respondendo o lari")
+        tempo_thu = 5*60 #5 minutos vezes 60
+        time.sleep(tempo_thu)
+        tempo_que_funciona = time.time() + tempo_thu #tempo de 5 minutos
+        last_seen_id_thu = retrieve_last_seen_id_thu(file_name_thu)
+        
+        print("Respondendo a thu...")
         while time.time() <= tempo_que_funciona:
-            last_seen_id_lari = retrieve_last_seen_id_lari(file_name_lari)
-
-            mentions_lari = api.user_timeline(userID_lari, 
-                                since_id = last_seen_id_lari,
-                                tweet_mode = 'extended')
             #Frases
-            arquivoFrases = open(frasestxt_lari, 'r')
+            arquivoFrases = open(frasestxt_thu, 'r')
             arrayFrases = arquivoFrases.read().split('\n')
             frase = random.choice(arrayFrases)
             #Frases
-
-            for mention in reversed(mentions_lari):
-                last_seen_id_lari = mention.id
-                store_last_seen_id_lari(last_seen_id_lari, file_name_lari)
-
-                api.update_status("@" + mention.user.screen_name + 
-                                    (' %s' % frase), mention.id)
-
-def store_tweets_lari(): # Armazena os Tweets do lari
-    print('Armazenando uns tweets uns tweets', flush=True)
-    while True:
-        last_seen_id_lari = retrieve_last_seen_id_lari(file_name_lari)
-
-        mentions_lari = api.user_timeline(userID_lari, 
-                            since_id = last_seen_id_lari,
+            time.sleep(6)
+            mentions_thu = api.user_timeline(userID_thu, 
+                            since_id = last_seen_id_thu,
                             tweet_mode = 'extended')
-        for mention in reversed(mentions_lari):
-            print(str(mention.id) + ' - ' + mention.full_text)
-            last_seen_id_lari = mention.id
-            store_last_seen_id_lari(last_seen_id_lari, file_name_lari)
+            
+            for mention in reversed(mentions_thu):
+                last_seen_id_thu = mention.id
+                store_last_seen_id_thu(last_seen_id_thu, file_name_thu)
 
-p_store_tweets_lari = threading.Thread(target=store_tweets_lari)
-p_reply_to_tweets_lari = threading.Thread(target=reply_to_tweets_lari)
+                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
 
-#Funções da Lulu
+def store_tweets_thu(): # Armazena os Tweets do thu
+    print('Armazenando uns tweets...', flush=True)
+    while True:
+        tempo_thu = 5*60
+        tempo_que_funciona =  time.time() + tempo_thu
+        last_seen_id_thu = retrieve_last_seen_id_thu(file_name_thu)
+
+
+        while time.time() <= tempo_que_funciona:
+            time.sleep(6)
+            mentions_thu = api.user_timeline(userID_thu, 
+                           since_id = last_seen_id_thu,
+                           tweet_mode = 'extended') 
+
+            for mention in reversed(mentions_thu):
+                print(str(mention.id) + ' - ' + mention.full_text,'- thu')
+                last_seen_id_thu = mention.id
+                store_last_seen_id_thu(last_seen_id_thu, file_name_thu)
+    time.sleep(tempo_thu)
+
+
+p_store_tweets_thu = threading.Thread(target=store_tweets_thu)
+p_reply_to_tweets_thu = threading.Thread(target=reply_to_tweets_thu)
+
+
+
+
+#Funções da thony-----------------------------------
+
+def retrieve_last_seen_id_thony(file_name_thony):
+    f_read = open(file_name_thony, 'r')
+    last_seen_id_thony = int(f_read.read().strip())
+    f_read.close()
+    return last_seen_id_thony
+
+def store_last_seen_id_thony(last_seen_id_thony, file_name_thony):
+    f_write = open(file_name_thony, 'w')
+    f_write.write(str(last_seen_id_thony))
+    f_write.close()
+    return
+
+ 
+def reply_to_tweets_thony(): # Responde a thony
+    print('Procurando uns tweets da thony...', flush=True)
+    while True:
+        tempo_thony = 5*60 #5 minutos vezes 60
+        time.sleep(tempo_thony)
+        tempo_que_funciona = time.time() + tempo_thony #tempo de 5 minutos
+        last_seen_id_thony = retrieve_last_seen_id_thony(file_name_thony)
+        
+        print("Respondendo a thony...")
+        while time.time() <= tempo_que_funciona:
+            #Frases
+            arquivoFrases = open(frasestxt_thony, 'r')
+            arrayFrases = arquivoFrases.read().split('\n')
+            frase = random.choice(arrayFrases)
+            #Frases
+            time.sleep(6)
+            mentions_thony = api.user_timeline(userID_thony, 
+                            since_id = last_seen_id_thony,
+                            tweet_mode = 'extended')
+            
+            for mention in reversed(mentions_thony):
+                last_seen_id_thony = mention.id
+                store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
+
+                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+
+def store_tweets_thony(): # Armazena os Tweets do thony
+    print('Armazenando uns tweets...', flush=True)
+    while True:
+        tempo_thony = 5*60
+        tempo_que_funciona =  time.time() + tempo_thony
+        last_seen_id_thony = retrieve_last_seen_id_thony(file_name_thony)
+
+
+        while time.time() <= tempo_que_funciona:
+            time.sleep(6)
+            mentions_thony = api.user_timeline(userID_thony, 
+                           since_id = last_seen_id_thony,
+                           tweet_mode = 'extended') 
+
+            for mention in reversed(mentions_thony):
+                print(str(mention.id) + ' - ' + mention.full_text,'- thony')
+                last_seen_id_thony = mention.id
+                store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
+    time.sleep(tempo_thony)
+
+
+p_store_tweets_thony = threading.Thread(target=store_tweets_thony)
+p_reply_to_tweets_thony = threading.Thread(target=reply_to_tweets_thony)
+
+
+
+
+#Funções da luiza-----------------------------------
 
 def retrieve_last_seen_id_luiza(file_name_luiza):
     f_read = open(file_name_luiza, 'r')
@@ -118,49 +202,122 @@ def store_last_seen_id_luiza(last_seen_id_luiza, file_name_luiza):
     f_write.close()
     return
 
-
-def reply_to_tweets_luiza(): # Responde o luiza
-    print('procurando uns tweets do luiza', flush=True)
+ 
+def reply_to_tweets_luiza(): # Responde a luiza
+    print('Procurando uns tweets da luiza...', flush=True)
     while True:
-        print("Reiniciando...")
         tempo_luiza = 5*60 #5 minutos vezes 60
         time.sleep(tempo_luiza)
         tempo_que_funciona = time.time() + tempo_luiza #tempo de 5 minutos
-        print("Respondendo o luiza")
+        last_seen_id_luiza = retrieve_last_seen_id_luiza(file_name_luiza)
+        
+        print("Respondendo a luiza...")
         while time.time() <= tempo_que_funciona:
-            last_seen_id_luiza = retrieve_last_seen_id_luiza(file_name_luiza)
-
-            mentions_luiza = api.user_timeline(userID_luiza, 
-                                since_id = last_seen_id_luiza,
-                                tweet_mode = 'extended')
             #Frases
             arquivoFrases = open(frasestxt_luiza, 'r')
             arrayFrases = arquivoFrases.read().split('\n')
             frase = random.choice(arrayFrases)
             #Frases
-
+            time.sleep(6)
+            mentions_luiza = api.user_timeline(userID_luiza, 
+                            since_id = last_seen_id_luiza,
+                            tweet_mode = 'extended')
+            
             for mention in reversed(mentions_luiza):
                 last_seen_id_luiza = mention.id
                 store_last_seen_id_luiza(last_seen_id_luiza, file_name_luiza)
 
-                api.update_status("@" + mention.user.screen_name + 
-                                    (' %s' % frase), mention.id)
+                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
 
 def store_tweets_luiza(): # Armazena os Tweets do luiza
-    print('Armazenando uns tweets uns tweets', flush=True)
+    print('Armazenando uns tweets...', flush=True)
     while True:
+        tempo_luiza = 5*60
+        tempo_que_funciona =  time.time() + tempo_luiza
         last_seen_id_luiza = retrieve_last_seen_id_luiza(file_name_luiza)
 
-        mentions_luiza = api.user_timeline(userID_luiza, 
-                            since_id = last_seen_id_luiza,
-                            tweet_mode = 'extended')
-        for mention in reversed(mentions_luiza):
-            print(str(mention.id) + ' - ' + mention.full_text)
-            last_seen_id_luiza = mention.id
-            store_last_seen_id_luiza(last_seen_id_luiza, file_name_luiza)
+
+        while time.time() <= tempo_que_funciona:
+            time.sleep(6)
+            mentions_luiza = api.user_timeline(userID_luiza, 
+                           since_id = last_seen_id_luiza,
+                           tweet_mode = 'extended') 
+
+            for mention in reversed(mentions_luiza):
+                print(str(mention.id) + ' - ' + mention.full_text,'- luiza')
+                last_seen_id_luiza = mention.id
+                store_last_seen_id_luiza(last_seen_id_luiza, file_name_luiza)
+    time.sleep(tempo_luiza)
+
 
 p_store_tweets_luiza = threading.Thread(target=store_tweets_luiza)
 p_reply_to_tweets_luiza = threading.Thread(target=reply_to_tweets_luiza)
+
+
+#Funções da lari-----------------------------------
+
+def retrieve_last_seen_id_lari(file_name_lari):
+    f_read = open(file_name_lari, 'r')
+    last_seen_id_lari = int(f_read.read().strip())
+    f_read.close()
+    return last_seen_id_lari
+
+def store_last_seen_id_lari(last_seen_id_lari, file_name_lari):
+    f_write = open(file_name_lari, 'w')
+    f_write.write(str(last_seen_id_lari))
+    f_write.close()
+    return
+
+ 
+def reply_to_tweets_lari(): # Responde a lari
+    print('Procurando uns tweets da lari...', flush=True)
+    while True:
+        tempo_lari = 5*60 #5 minutos vezes 60
+        time.sleep(tempo_lari)
+        tempo_que_funciona = time.time() + tempo_lari #tempo de 5 minutos
+        last_seen_id_lari = retrieve_last_seen_id_lari(file_name_lari)
+        
+        print("Respondendo a lari...")
+        while time.time() <= tempo_que_funciona:
+            #Frases
+            arquivoFrases = open(frasestxt_lari, 'r')
+            arrayFrases = arquivoFrases.read().split('\n')
+            frase = random.choice(arrayFrases)
+            #Frases
+            time.sleep(6)
+            mentions_lari = api.user_timeline(userID_lari, 
+                            since_id = last_seen_id_lari,
+                            tweet_mode = 'extended')
+            
+            for mention in reversed(mentions_lari):
+                last_seen_id_lari = mention.id
+                store_last_seen_id_lari(last_seen_id_lari, file_name_lari)
+
+                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+
+def store_tweets_lari(): # Armazena os Tweets do lari
+    print('Armazenando uns tweets...', flush=True)
+    while True:
+        tempo_lari = 5*60
+        tempo_que_funciona =  time.time() + tempo_lari
+        last_seen_id_lari = retrieve_last_seen_id_lari(file_name_lari)
+
+
+        while time.time() <= tempo_que_funciona:
+            time.sleep(6)
+            mentions_lari = api.user_timeline(userID_lari, 
+                           since_id = last_seen_id_lari,
+                           tweet_mode = 'extended') 
+
+            for mention in reversed(mentions_lari):
+                print(str(mention.id) + ' - ' + mention.full_text,'- Lari')
+                last_seen_id_lari = mention.id
+                store_last_seen_id_lari(last_seen_id_lari, file_name_lari)
+    time.sleep(tempo_lari)
+
+
+p_store_tweets_lari = threading.Thread(target=store_tweets_lari)
+p_reply_to_tweets_lari = threading.Thread(target=reply_to_tweets_lari)
 
 #Funções do Vitin-----------------------------------
 
@@ -176,63 +333,78 @@ def store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs):
     f_write.close()
     return
 
-
-def reply_to_tweets_vgs(): # Responde o Vitin
-    print('procurando uns tweets do Vitin', flush=True)
+ 
+def reply_to_tweets_vgs(): # Responde o Vgs
+    print('Procurando uns tweets do Vgs...', flush=True)
     while True:
-        print("Reiniciando...")
         tempo_vgs = 5*60 #5 minutos vezes 60
         time.sleep(tempo_vgs)
         tempo_que_funciona = time.time() + tempo_vgs #tempo de 5 minutos
-        print("Respondendo o Vitin")
+        last_seen_id_vgs = retrieve_last_seen_id_vgs(file_name_vgs)
+        
+        print("Respondendo o Vgs...")
         while time.time() <= tempo_que_funciona:
-            last_seen_id_vgs = retrieve_last_seen_id_vgs(file_name_vgs)
-
-            mentions_vgs = api.user_timeline(userID_vgs, 
-                                since_id = last_seen_id_vgs,
-                                tweet_mode = 'extended')
             #Frases
             arquivoFrases = open(frasestxt_vgs, 'r')
             arrayFrases = arquivoFrases.read().split('\n')
             frase = random.choice(arrayFrases)
             #Frases
-
+            time.sleep(6)
+            mentions_vgs = api.user_timeline(userID_vgs, 
+                            since_id = last_seen_id_vgs,
+                            tweet_mode = 'extended')
+            
             for mention in reversed(mentions_vgs):
                 last_seen_id_vgs = mention.id
                 store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
 
-                api.update_status("@" + mention.user.screen_name + 
-                                    (' %s' % frase), mention.id)
+                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+        print("Parando de responder.")
+        
 
-def store_tweets_vgs(): # Armazena os Tweets do Vitin
-    print('Armazenando uns tweets uns tweets', flush=True)
+def store_tweets_vgs(): # Armazena os Tweets do Vgs
+    print('Armazenando uns tweets...', flush=True)
     while True:
+        tempo_vgs = 5*60
+        tempo_que_funciona =  time.time() + tempo_vgs
         last_seen_id_vgs = retrieve_last_seen_id_vgs(file_name_vgs)
 
-        mentions_vgs = api.user_timeline(userID_vgs, 
-                            since_id = last_seen_id_vgs,
-                            tweet_mode = 'extended')
-        for mention in reversed(mentions_vgs):
-            print(str(mention.id) + ' - ' + mention.full_text)
-            last_seen_id_vgs = mention.id
-            store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
+        while time.time()<=tempo_que_funciona:
+            time.sleep(6)
+            mentions_vgs = api.user_timeline(userID_vgs, 
+                           since_id = last_seen_id_vgs,
+                           tweet_mode = 'extended') 
+
+            for mention in reversed(mentions_vgs):
+                print(str(mention.id) + ' - ' + mention.full_text, '- Vgs')
+                last_seen_id_vgs = mention.id
+                store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
+    print("Parando de armazenar.")
+    time.sleep(tempo_vgs)
+
 
 p_store_tweets_vgs = threading.Thread(target=store_tweets_vgs)
 p_reply_to_tweets_vgs = threading.Thread(target=reply_to_tweets_vgs)
 
 
-
-
 #Funções Paralelas
 
-#Funções do Vitin
+#Funções do Vgs
 p_store_tweets_vgs.start()
 p_reply_to_tweets_vgs.start()
-
-#Funções da Luiza
-p_store_tweets_luiza.start()
-p_reply_to_tweets_luiza.start()
 
 #Funções da lari
 p_store_tweets_lari.start()
 p_reply_to_tweets_lari.start()
+
+#Funções da luiza
+p_store_tweets_luiza.start()
+p_reply_to_tweets_luiza.start()
+
+#Funções da thony
+p_store_tweets_thony.start()
+p_reply_to_tweets_thony.start()
+
+#Funções da thu
+p_store_tweets_thu.start()
+p_reply_to_tweets_thu.start()
