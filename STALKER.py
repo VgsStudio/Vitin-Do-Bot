@@ -7,7 +7,6 @@ consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
 access_token_secret = environ['access_token_secret']
 
-
 print('Vitin do Bot', flush=True)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -41,7 +40,7 @@ frasestxt_luiza = 'frases_luiza.txt'
 userID_thony = 'anthony_vigario'
 
 file_name_thony = 'last_seen_id_thony.txt'
-frasestxt_thony = 'frases_vitin.txt'
+frasestxt_thony = 'frases_thony.txt'
 
 
 
@@ -85,13 +84,14 @@ def reply_to_tweets_thu(): # Responde a thu
             time.sleep(6)
             mentions_thu = api.user_timeline(userID_thu, 
                             since_id = last_seen_id_thu,
+                            include_rt = False,
                             tweet_mode = 'extended')
             
             for mention in reversed(mentions_thu):
                 last_seen_id_thu = mention.id
                 store_last_seen_id_thu(last_seen_id_thu, file_name_thu)
-
-                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                    api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
 
 def store_tweets_thu(): # Armazena os Tweets do thu
     print('Armazenando uns tweets...', flush=True)
@@ -105,6 +105,7 @@ def store_tweets_thu(): # Armazena os Tweets do thu
             time.sleep(6)
             mentions_thu = api.user_timeline(userID_thu, 
                            since_id = last_seen_id_thu,
+                           include_rt = False,
                            tweet_mode = 'extended') 
 
             for mention in reversed(mentions_thu):
@@ -153,13 +154,16 @@ def reply_to_tweets_thony(): # Responde a thony
             time.sleep(6)
             mentions_thony = api.user_timeline(userID_thony, 
                             since_id = last_seen_id_thony,
+                            include_rt = False,
                             tweet_mode = 'extended')
             
             for mention in reversed(mentions_thony):
-                last_seen_id_thony = mention.id
+                last_seen_id_thony = mention.id   
                 store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
-
-                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                    api.create_favorite(mention.id)
+                    api.retweet(mention.id)
+                    api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
 
 def store_tweets_thony(): # Armazena os Tweets do thony
     print('Armazenando uns tweets...', flush=True)
@@ -173,12 +177,16 @@ def store_tweets_thony(): # Armazena os Tweets do thony
             time.sleep(6)
             mentions_thony = api.user_timeline(userID_thony, 
                            since_id = last_seen_id_thony,
+                           include_rt = False,
                            tweet_mode = 'extended') 
 
             for mention in reversed(mentions_thony):
                 print(str(mention.id) + ' - ' + mention.full_text,'- thony')
                 last_seen_id_thony = mention.id
                 store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
+                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                    api.create_favorite(mention.id)
+                    api.retweet(mention.id)
     time.sleep(tempo_thony)
 
 
@@ -221,13 +229,14 @@ def reply_to_tweets_luiza(): # Responde a luiza
             time.sleep(6)
             mentions_luiza = api.user_timeline(userID_luiza, 
                             since_id = last_seen_id_luiza,
+                            include_rt = False,
                             tweet_mode = 'extended')
             
             for mention in reversed(mentions_luiza):
                 last_seen_id_luiza = mention.id
                 store_last_seen_id_luiza(last_seen_id_luiza, file_name_luiza)
-
-                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                    api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
 
 def store_tweets_luiza(): # Armazena os Tweets do luiza
     print('Armazenando uns tweets...', flush=True)
@@ -241,6 +250,7 @@ def store_tweets_luiza(): # Armazena os Tweets do luiza
             time.sleep(6)
             mentions_luiza = api.user_timeline(userID_luiza, 
                            since_id = last_seen_id_luiza,
+                           include_rt = False,
                            tweet_mode = 'extended') 
 
             for mention in reversed(mentions_luiza):
@@ -287,13 +297,14 @@ def reply_to_tweets_lari(): # Responde a lari
             time.sleep(6)
             mentions_lari = api.user_timeline(userID_lari, 
                             since_id = last_seen_id_lari,
+                            include_rt = False,
                             tweet_mode = 'extended')
             
             for mention in reversed(mentions_lari):
                 last_seen_id_lari = mention.id
                 store_last_seen_id_lari(last_seen_id_lari, file_name_lari)
-
-                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                   api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
 
 def store_tweets_lari(): # Armazena os Tweets do lari
     print('Armazenando uns tweets...', flush=True)
@@ -307,6 +318,7 @@ def store_tweets_lari(): # Armazena os Tweets do lari
             time.sleep(6)
             mentions_lari = api.user_timeline(userID_lari, 
                            since_id = last_seen_id_lari,
+                           include_rt = False,
                            tweet_mode = 'extended') 
 
             for mention in reversed(mentions_lari):
@@ -352,13 +364,16 @@ def reply_to_tweets_vgs(): # Responde o Vgs
             time.sleep(6)
             mentions_vgs = api.user_timeline(userID_vgs, 
                             since_id = last_seen_id_vgs,
+                            include_rt = False,
                             tweet_mode = 'extended')
             
             for mention in reversed(mentions_vgs):
                 last_seen_id_vgs = mention.id
                 store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
-
-                api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                    api.create_favorite(mention.id)
+                    api.retweet(mention.id)                    
+                    api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
         print("Parando de responder.")
         
 
@@ -369,19 +384,22 @@ def store_tweets_vgs(): # Armazena os Tweets do Vgs
         tempo_que_funciona =  time.time() + tempo_vgs
         last_seen_id_vgs = retrieve_last_seen_id_vgs(file_name_vgs)
 
+
         while time.time()<=tempo_que_funciona:
             time.sleep(6)
             mentions_vgs = api.user_timeline(userID_vgs, 
                            since_id = last_seen_id_vgs,
+                           include_rt = False,
                            tweet_mode = 'extended') 
-
             for mention in reversed(mentions_vgs):
                 print(str(mention.id) + ' - ' + mention.full_text, '- Vgs')
                 last_seen_id_vgs = mention.id
                 store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
+                if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
+                    api.create_favorite(mention.id)
+                    api.retweet(mention.id)  
     print("Parando de armazenar.")
     time.sleep(tempo_vgs)
-
 
 p_store_tweets_vgs = threading.Thread(target=store_tweets_vgs)
 p_reply_to_tweets_vgs = threading.Thread(target=reply_to_tweets_vgs)
@@ -401,10 +419,12 @@ p_reply_to_tweets_lari.start()
 p_store_tweets_luiza.start()
 p_reply_to_tweets_luiza.start()
 
-#Funções da thony
+#Funções do thony
 p_store_tweets_thony.start()
 p_reply_to_tweets_thony.start()
 
 #Funções da thu
 p_store_tweets_thu.start()
 p_reply_to_tweets_thu.start()
+
+
