@@ -34,7 +34,6 @@ userID_luiza = 'luizaskun'
 file_name_luiza = 'last_seen_id_luiza.txt'
 frasestxt_luiza = 'frases_luiza.txt'
 
-
     #thony
 userID_thony = 'anthony_vigario'
 
@@ -145,11 +144,7 @@ def reply_to_tweets_thony(): # Responde a thony
         
         print("Respondendo a thony...")
         while time.time() <= tempo_que_funciona:
-            #Frases
-            arquivoFrases = open(frasestxt_thony, 'r')
-            arrayFrases = arquivoFrases.read().split('\n')
-            frase = random.choice(arrayFrases)
-            #Frases
+            
             time.sleep(6)
             mentions_thony = api.user_timeline(userID_thony, 
                             since_id = last_seen_id_thony,
@@ -161,8 +156,12 @@ def reply_to_tweets_thony(): # Responde a thony
                     last_seen_id_thony = mention.id
                     store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
 
-                    last_seen_id_thony = mention.id   
-                    store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
+                    #Frases
+                    arquivoFrases = open(frasestxt_thony, 'r')
+                    arrayFrases = arquivoFrases.read().split('\n')
+                    frase = random.choice(arrayFrases)
+                    #Frases
+
                     if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
                         api.create_favorite(mention.id)
                         api.retweet(mention.id)
@@ -367,11 +366,6 @@ def reply_to_tweets_vgs(): # Responde o Vgs
         
         print("Respondendo o Vgs...")
         while time.time() <= tempo_que_funciona:
-            #Frases
-            arquivoFrases = open(frasestxt_vgs, 'r')
-            arrayFrases = arquivoFrases.read().split('\n')
-            frase = random.choice(arrayFrases)
-            #Frases
             time.sleep(6)
             mentions_vgs = api.user_timeline(userID_vgs, 
                             since_id = last_seen_id_vgs,
@@ -383,6 +377,13 @@ def reply_to_tweets_vgs(): # Responde o Vgs
                 if last_seen_id_vgs < mention.id:
                     last_seen_id_vgs = mention.id
                     store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
+
+                    #Frases
+                    arquivoFrases = open(frasestxt_vgs, 'r')
+                    arrayFrases = arquivoFrases.read().split('\n')
+                    frase = random.choice(arrayFrases)
+                    #Frases
+
                     if ('RT @' not in mention.full_text): #Evita responder RTs sem comentários
                         api.create_favorite(mention.id)
                         api.retweet(mention.id)                    
