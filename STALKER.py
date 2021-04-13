@@ -392,7 +392,8 @@ def reply_to_tweets_vgs(): # Responde o Vgs
 
                 else:
                     break
-            print("Parando de responder.")
+
+                print("Parando de responder.")
             
         
 
