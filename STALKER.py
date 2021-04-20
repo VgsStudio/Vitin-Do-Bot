@@ -163,9 +163,13 @@ def reply_to_tweets_thony(): # Responde a thony
                     #Frases
 
                     if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
-                        api.create_favorite(mention.id)
-                        api.retweet(mention.id)
                         api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                        try:
+                            api.create_favorite(mention.id)
+                            api.retweet(mention.id)   
+                        except tweepy.TweepError as error:
+                                if error.api_code == 139:
+                                    print('Tweet já favoritado...') 
                 else:
                     break
 
@@ -391,10 +395,14 @@ def reply_to_tweets_vgs(): # Responde o Vgs
                     frase = random.choice(arrayFrases)
                     #Frases
 
-                    if ('RT @' not in mention.full_text): #Evita responder RTs sem comentários
-                        api.create_favorite(mention.id)
-                        api.retweet(mention.id)                    
+                    if ('RT @' not in mention.full_text): #Evita responder RTs sem comentários                 
                         api.update_status("@" + mention.user.screen_name + (' %s' % frase), mention.id)
+                        try:
+                            api.create_favorite(mention.id)
+                            api.retweet(mention.id)   
+                        except tweepy.TweepError as error:
+                                if error.api_code == 139:
+                                    print('Tweet já favoritado...')  
 
                 else:
                     break
