@@ -37,7 +37,7 @@ file_name_luiza = 'last_seen_id_luiza.txt'
 frasestxt_luiza = 'frases_luiza.txt'
 
     #thony
-userID_thony = 'anthony_vigario'
+userID_thony = 'sanickBR'
 
 file_name_thony = 'last_seen_id_thony.txt'
 frasestxt_thony = 'frases_thony.txt'
