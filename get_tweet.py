@@ -15,7 +15,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-userID = 'vgs_studio' # Usuário
+userID = 'anthony_vigario' # Usuário
 
 mentions = api.user_timeline(userID, 
                            tweet_mode = 'extended'

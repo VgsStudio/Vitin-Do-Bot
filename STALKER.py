@@ -7,6 +7,7 @@ consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
 access_token_secret = environ['access_token_secret']
 
+
 print('Vitin do Bot', flush=True)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -40,8 +41,6 @@ userID_thony = 'anthony_vigario'
 
 file_name_thony = 'last_seen_id_thony.txt'
 frasestxt_thony = 'frases_thony.txt'
-
-
 
     #thu
 userID_thu = 'tutu_kosinski'
@@ -194,11 +193,18 @@ def store_tweets_thony(): # Armazena os Tweets do thony
                     last_seen_id_thony = mention.id
                     store_last_seen_id_thony(last_seen_id_thony, file_name_thony)
                     if 'RT @' not in mention.full_text: #Evita responder RTs sem comentários
-                        api.create_favorite(mention.id)
-                        api.retweet(mention.id)
+                        try:
+                            api.create_favorite(mention.id)
+                            api.retweet(mention.id)
+                        except tweepy.TweepError as error:
+                                    if error.api_code == 139:
+                                        print('Tweet já favoritado...')
+                        
                 else:
                     break
     time.sleep(tempo_thony)
+
+
 
 
 p_store_tweets_thony = threading.Thread(target=store_tweets_thony)
@@ -418,8 +424,12 @@ def store_tweets_vgs(): # Armazena os Tweets do Vgs
                     last_seen_id_vgs = mention.id
                     store_last_seen_id_vgs(last_seen_id_vgs, file_name_vgs)
                     if 'RT @' not in mention.full_text: #Evita curtir RTs sem comentários
-                        api.create_favorite(mention.id)
-                        api.retweet(mention.id)  
+                        try:
+                            api.create_favorite(mention.id)
+                            api.retweet(mention.id)
+                        except tweepy.TweepError as error:
+                                    if error.api_code == 139:
+                                        print('Tweet já favoritado...')  
                 else:
                     break
 
@@ -464,9 +474,14 @@ def manda_salve():
             store_last_seen_id_salve(last_seen_id_salve, file_name_salve)
             
             if 'salve' in mention.full_text.lower():
-                print("Salve cachorro do mangue")
-                api.update_status("@" + mention.user.screen_name + 
-                                " Salve, cachorro do mangue!", mention.id)
+                try:
+                    print("Salve, cachorro do mangue")
+                    api.update_status("@" + mention.user.screen_name + 
+                                    " Salve, cachorro do mangue!", mention.id)
+                except tweepy.TweepError as error:
+                    if error.api_code == 187:
+                        print('Erro: Salve já enviado!')  
+
 p_manda_salve = threading.Thread(target = manda_salve)
 
 def tweet_trap():
