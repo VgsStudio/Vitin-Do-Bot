@@ -1,2 +1,1 @@
-worker: python STALKER.py
-heroku run bash
+worker: python STALKER.py runserver 0.0.0.0:$PORT --noreload
