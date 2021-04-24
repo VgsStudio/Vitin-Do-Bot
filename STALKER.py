@@ -1,5 +1,5 @@
 #Funções Paralelas
-'''
+
 # Responde salve
 from salve.func_salve import p_manda_salve
 p_manda_salve.start()
@@ -29,7 +29,7 @@ p_reply_to_tweets_lari.start()
 from luiza.func_luiza import p_store_tweets_luiza, p_reply_to_tweets_luiza
 p_store_tweets_luiza.start()
 p_reply_to_tweets_luiza.start()
-'''
+
 #Funções do thony
 from thony.func_thony import p_store_tweets_thony, p_reply_to_tweets_thony
 p_store_tweets_thony.start()

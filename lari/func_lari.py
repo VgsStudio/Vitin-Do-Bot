@@ -17,8 +17,8 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
     #Lari
 userID_lari = 'llaricasarini'
 
-file_name_lari = 'last_seen_id_lari.txt'
-frasestxt_lari = 'frases_lari.txt'
+file_name_lari = 'lari/last_seen_id_lari.txt'
+frasestxt_lari = 'lari/frases_lari.txt'
 
 
 #Funções da lari-----------------------------------

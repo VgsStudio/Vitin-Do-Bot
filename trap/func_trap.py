@@ -15,7 +15,7 @@ def tweet_trap():
     while True:
         time.sleep(30*60) #30 segundos * 60 -> 30 minutos.
         
-        vitin_tweets =  'vitin_tweets.txt' #Arquivo das Frases
+        vitin_tweets =  'trap/vitin_tweets.txt' #Arquivo das Frases
 
         try:
             #Frases
