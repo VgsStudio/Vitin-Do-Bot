@@ -16,7 +16,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
     #thony
 userID_thony = 'sanickBR'
 
-file_name_thony = 'thony\\last_seen_id_thony.txt'
+file_name_thony = 'last_seen_id_thony.txt'
 frasestxt_thony = 'frases_thony.txt'
 
 #Funções do Thony-----------------------------------

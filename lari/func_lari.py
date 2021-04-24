@@ -4,15 +4,10 @@ from os import environ
 
 from func_global import *
 
-"""consumer_key = environ['consumer_key']
+consumer_key = environ['consumer_key']
 consumer_secret = environ['consumer_secret']
 access_token = environ['access_token']
 access_token_secret = environ['access_token_secret']
-"""
-consumer_key = 'E8unZOskXX4fRJkEt7HizREwS'
-consumer_secret = 'QD0bwerax4gJp2F7GVbukBzqrGDueDTb9WhhezBJQz0TjH7lRI'
-access_token = '1369432777742049285-XLgRqC0F3aGsHH8veSLI4qxNAVemLt'
-access_token_secret = 'vC9ddfcbKj4XLfHDvRddlVPy7hrVKJeyaQAbXDVR3ZxDo'
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -22,7 +17,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
     #Lari
 userID_lari = 'llaricasarini'
 
-file_name_lari = 'lari\\last_seen_id_lari.txt'
+file_name_lari = 'last_seen_id_lari.txt'
 frasestxt_lari = 'frases_lari.txt'
 
 

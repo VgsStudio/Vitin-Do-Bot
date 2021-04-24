@@ -19,7 +19,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
     #Vitin
 userID_vgs = 'vgs_studio'
 
-file_name_vgs = 'vgs\\last_seen_id_vgs.txt'
+file_name_vgs = 'last_seen_id_vgs.txt'
 frasestxt_vgs = 'frases_vitin.txt'
 
 #Funções do Vitin-----------------------------------

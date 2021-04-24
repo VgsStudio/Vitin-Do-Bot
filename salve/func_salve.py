@@ -16,7 +16,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
 
 #Responder salve
 
-file_name_salve = 'salve\\last_salve_id.txt'
+file_name_salve = 'last_salve_id.txt'
 
 def manda_salve():
     print('Respondendo salve...', flush=True)

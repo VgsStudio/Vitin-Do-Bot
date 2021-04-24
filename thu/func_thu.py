@@ -17,7 +17,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
     #thu
 userID_thu = 'tutu_kosinski'
 
-file_name_thu = 'thu\\last_seen_id_thu.txt'
+file_name_thu = 'last_seen_id_thu.txt'
 frasestxt_thu = 'frases_thu.txt'
 
 
