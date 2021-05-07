@@ -1,6 +1,6 @@
 import tweepy, time, random, threading, wikipedia
 
-
+from os import environ
 
 consumer_key = environ['consumer_key']
 consumer_secret = environ['consumer_secret']
@@ -31,7 +31,7 @@ def get_random_pages_summary(pages=0):
 
 def random_page():
     while True:
-        time.sleep(15*60) #15 min
+        time.sleep(7*60) #15 min
         text = get_random_pages_summary(1)
         titulo = text[0]
         text = text[1]
