@@ -1,5 +1,6 @@
 apm==0.0.1
 astroid==2.5.2
+beautifulsoup4==4.9.3
 certifi==2020.12.5
 chardet==4.0.0
 colorama==0.4.4

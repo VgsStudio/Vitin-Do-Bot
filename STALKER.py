@@ -34,3 +34,7 @@ p_reply_to_tweets_luiza.start()
 from thony.func_thony import p_store_tweets_thony, p_reply_to_tweets_thony
 p_store_tweets_thony.start()
 p_reply_to_tweets_thony.start()
+
+#Função da Wiki
+from wiki.func_wiki import p_random_page 
+p_random_page.start()
